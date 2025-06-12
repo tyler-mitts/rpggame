@@ -20,7 +20,7 @@ const BossScreen = () => {
   const [introTextFadeIn, setIntroTextFadeIn] = useState(false);
   const ideRef = useRef(null);
 
-  // Boss idle animation state
+  //Boss animation
   const [bossY, setBossY] = useState(0);
   useEffect(() => {
     let frame = 0;
@@ -34,27 +34,25 @@ const BossScreen = () => {
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  // Show intro boss text for longer with fade from black
+  //Intro effects
   useEffect(() => {
     setShowIntro(true);
     setIntroFade(true);
     setFadeIn(false);
-    // Fade from black for 2.5s, then show text for 3.5s, then fade out intro
     const fadeTimeout = setTimeout(() => setIntroFade(false), 2500);
     const introTimeout = setTimeout(() => {
       setShowIntro(false);
-      setTimeout(() => setFadeIn(true), 100); // Fade in main screen
+      setTimeout(() => setFadeIn(true), 100);
       if (ideRef.current) {
         ideRef.current.focus();
       }
-    }, 6000); // 2.5s fade + 3.5s text
+    }, 6000);
     return () => {
       clearTimeout(fadeTimeout);
       clearTimeout(introTimeout);
     };
   }, []);
 
-  // Fade in the intro text as soon as bossScreen appears
   useEffect(() => {
     if (showIntro) {
       setIntroTextFadeIn(false);
@@ -62,7 +60,7 @@ const BossScreen = () => {
     }
   }, [showIntro]);
 
-  // Handle typing in the IDE area
+  //Types the message :) when any button is pressed
   useEffect(() => {
     if (!inputActive || showIntro) return;
     const handleKeyDown = (e) => {
@@ -76,7 +74,7 @@ const BossScreen = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [msgIndex, inputActive, showIntro]);
 
-  // When finished typing, start spamming
+  //Loops message when fully typed
   useEffect(() => {
     if (msgIndex >= customMessage.length && inputActive) {
       setInputActive(false);
@@ -85,10 +83,9 @@ const BossScreen = () => {
     }
   }, [msgIndex, inputActive]);
 
-  // Spam the message very fast until the IDE is full, then show error
   useEffect(() => {
     if (!spamming) return;
-    const maxLines = 30; // Fill the IDE visually
+    const maxLines = 30;
     if (lines.length >= maxLines) {
       setSpamming(false);
       setTimeout(() => setShowError(true), 300);
@@ -100,7 +97,6 @@ const BossScreen = () => {
     return () => clearTimeout(spamTimeout);
   }, [spamming, lines]);
 
-  // Focus IDE on click
   const handleIDEClick = () => {
     if (ideRef.current) ideRef.current.focus();
   };

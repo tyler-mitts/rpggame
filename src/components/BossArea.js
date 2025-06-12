@@ -86,7 +86,7 @@ const BossArea = ({ bossImg, bossBg, bossY }) => (
         lineHeight: 1.3,
       }}
     >
-      <b>Create a loop algorithm to kill Martin!</b>
+      <b>Write a loop algorithm to kill Martin!</b>
     </p>
   </div>
 );

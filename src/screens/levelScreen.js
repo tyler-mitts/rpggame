@@ -20,10 +20,9 @@ const LevelScreen = () => {
   const keys = useRef({});
   const navigate = useNavigate();
 
-  // Camera state
   const [cameraX, setCameraX] = useState(0);
 
-  // Handle keyboard input
+  //Keyboard input
   useEffect(() => {
     const handleKeyDown = (e) => {
       keys.current[e.key.toLowerCase()] = true;
@@ -39,7 +38,6 @@ const LevelScreen = () => {
     };
   }, []);
 
-  // Game loop for movement
   useEffect(() => {
     if (gameOver) return;
     const interval = setInterval(() => {
@@ -53,7 +51,7 @@ const LevelScreen = () => {
     return () => clearInterval(interval);
   }, [gameOver]);
 
-  // Camera follows player
+  //Keeps camera centered on player
   useEffect(() => {
     const screenWidth = window.innerWidth;
     let cam = player.x + PLAYER_WIDTH / 2 - screenWidth / 2;
@@ -61,7 +59,7 @@ const LevelScreen = () => {
     setCameraX(cam);
   }, [player.x]);
 
-  // Attack logic
+  //Attack logic
   useEffect(() => {
     if (gameOver) return;
     const handleAttack = (e) => {
@@ -89,7 +87,7 @@ const LevelScreen = () => {
     return () => window.removeEventListener('keydown', handleAttack);
   }, [player.x, bossFight, attackAnim, gameOver]);
 
-  // Check if all enemies are defeated to allow boss area
+  //Checks to see if all enemies are defeated
   useEffect(() => {
     if (!bossFight && enemies.every((e) => !e.alive)) {
       setBossFight(true);
@@ -97,20 +95,19 @@ const LevelScreen = () => {
     }
   }, [enemies, bossFight]);
 
-  // Fade to black and navigate to boss screen when player reaches boss area
+  // Fade to black and navigates to boss screen
   useEffect(() => {
     if (
       bossFight &&
-      player.x + PLAYER_WIDTH > bossTriggerX - 20 // Near the boss area
+      player.x + PLAYER_WIDTH > bossTriggerX - 20 //Near the boss area
     ) {
       setFade(true);
       setTimeout(() => {
         navigate('/boss');
-      }, 1200); // Fade duration
+      }, 1200);
     }
   }, [player.x, bossFight, navigate]);
 
-  // When game over, show message and freeze controls
   useEffect(() => {
     if (gameOver) {
       setTimeout(() => {
@@ -135,9 +132,9 @@ const LevelScreen = () => {
         left: 0,
       }}
     >
-      <h1>Level 1: Battle Arena</h1>
+      <h1>Level 1: Tutorial</h1>
       <div>
-        <strong>Your Health:</strong> {player.health}
+        <strong>Health:</strong> {player.health}
       </div>
       <p>{message}</p>
       <div
@@ -171,7 +168,6 @@ const LevelScreen = () => {
             (enemy) =>
               enemy.alive && <Enemy key={enemy.id} enemy={enemy} />
           )}
-          {/* No boss here */}
         </div>
         {/* Fade overlay */}
         <div
