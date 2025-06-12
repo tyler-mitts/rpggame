@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LevelSelectionScreen />} />
+        <Route path="/rpggame" element={<LevelSelectionScreen />} />
         <Route path="/level/:1" element={<LevelScreen />} />
         <Route path="/boss" element={<BossScreen />} />
         <Route path="/yesScreen" element={<YesScreen />} />
